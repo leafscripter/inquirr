@@ -13,3 +13,7 @@ projectSchema = new Schema({
         favoriteCount: Number,
     }
 })
+
+Project = mongoose.model('Project', projectSchema);
+
+module.exports = Project;
