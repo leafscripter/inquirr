@@ -145,4 +145,33 @@ router.post('/forgetpass', function (req, res, next) {
 	
 });
 
+router.get('/chat', function (req, res, next) {
+	res.render("chat.ejs");
+});
+
+(() => {
+	const connections = [];
+	
+	router.ws('/chat', function (ws, req) {
+		
+		// store connection for further use
+		connections.push(ws);
+		// store index of connection for later removal
+		ws.connection_index = connections.length - 1;
+		
+		ws.on('message', async function (msg) {
+			console.log('new message:', msg);
+			// send message to all connected users
+			for(let i of connections){
+				i.send(msg);
+			}
+		});
+		
+		// remove the connection from the array when it closes
+		ws.on('close', function() {
+			connections.splice(ws.connection_index, 1);
+		});
+	});
+})();
+
 module.exports = router;
