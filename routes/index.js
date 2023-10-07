@@ -1,9 +1,14 @@
-var express = require('express');
-var bcrypt = require('bcrypt');
+const express = require('express');
+const bcrypt = require('bcrypt');
+const recommend = require('collaborative-filter');
 
-var router = express.Router();
-var User = require('../models/user');
-var Project = require('../models/project');
+const router = express.Router();
+const User = require('../models/user').default;
+const Project = require('../models/project');
+
+const PROJECT_LIMIT = 10;
+
+var mR = math.matrix() // use this for the recommendation algorithm
 
 router.get('/', function (req, res, next) {
 	return res.render('index.ejs');
@@ -65,15 +70,29 @@ router.post('/', function(req, res, next) {
     }
 });
 
-router.get('/getProjects', async (req, res) => {
-	let projects = Project.find()
-		.limit(10);
+router.post('/likeProject', function (req, res) {
+	var personInfo = req.body;
 
-	res.json(projects)
+
+	// Implement following functionality: 
+	// Check if the user has already liked the post
+	//
+}) 
+
+
+
+router.get('/getProjects', async (req, res) => {
+	let projects = await Project.find({})
+		.limit(PROJECT_LIMIT)
+		.sort({date: -1}); // sort by date in descending ordero
+
+	res.json({projects}) 
 })
 
 router.get('/recommendProjects', async (req, res) => {
-	
+	const recommendation = await Project.aggregate([
+		{$match: {generalCategories: {}}}
+	]);
 })
 
 router.get('/login', function (req, res, next) {

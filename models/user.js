@@ -1,19 +1,27 @@
-var mongoose = require('mongoose');
-var Schema = mongoose.Schema;
+const mongoose = require('mongoose');
+const Schema  = mongoose.Schema; 
 
-userSchema = new Schema( {
-	unique_id: Number,
+var interestObject = {
+	keywords: String, 
+	languages: [String],
+	experience: Number,
+}
+
+var userSchema = new Schema({
+	unique_id: mongoose.ObjectId, // For generating unique identifiers
 	email: String,
 	country: String, 
-	language: String,
+	languages: [String],
 	description: String,
-	categories: Array,
+	interests: [interestObject],
+	likedProjects: [{id: mongoose.ObjectId}],
+	hiddenAttributes: [{name: Boolean, email: Boolean}],
 	verified: Boolean,
 	username: String,
 	password: String,
 	passwordConf: String,
-}),
+});
 
-User = mongoose.model('User', userSchema);
+var User = mongoose.model('User', userSchema);
 
 module.exports = User;

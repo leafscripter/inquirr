@@ -1,5 +1,5 @@
 var express = require('express');
-var env = require('dotenv').config()
+var env = require('dotenv').config();
 var ejs = require('ejs');
 var path = require('path');
 var app = express();
