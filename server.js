@@ -3,6 +3,7 @@ var env = require('dotenv').config()
 var ejs = require('ejs');
 var path = require('path');
 var app = express();
+var expressWs = require('express-ws')(app);
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
@@ -34,7 +35,7 @@ app.use(session({
 }));
 
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');	
+app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
