@@ -3,12 +3,13 @@ var env = require('dotenv').config()
 var ejs = require('ejs');
 var path = require('path');
 var app = express();
+var expressWs = require('express-ws')(app);
 var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var session = require('express-session');
 var MongoStore = require('connect-mongo')(session);
 
-mongoose.connect('mongodb+srv://inquirer:oAfzSU5xPr4HMAE3@inquirr.u1mwibk.mongodb.net/inquirr?retryWrites=true&w=majority', {
+mongoose.connect(process.env.CONNECTION_STRING, {
   useNewUrlParser: true,
   useUnifiedTopology: true
 }, (err) => {
@@ -34,7 +35,7 @@ app.use(session({
 }));
 
 app.set('views', path.join(__dirname, 'views'));
-app.set('view engine', 'ejs');	
+app.set('view engine', 'ejs');
 
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
