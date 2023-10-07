@@ -1,7 +1,7 @@
 {
-  "name": "creating-registration-and-login-form-in-nodejs-and-mongodb",
+  "name": "inquirr",
   "version": "1.0.0",
-  "description": "This is a user login and registration app using Node.js, Express, Mongoose and express-sessions. ",
+  "description": "This is a submission for NASA Space Apps Challenge 2023",
   "main": "server.js",
   "dependencies": {
     "connect-mongo": "^3.0.0",
@@ -9,11 +9,11 @@
     "ejs": "^3.0.1",
     "express": "^4.17.1",
     "express-session": "^1.16.2",
+    "express-ws": "^5.0.2",
     "mongodb": "4.1",
     "mongoose": "^5.6.10"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1",
     "start": "node server.js"
   },
   "repository": {
