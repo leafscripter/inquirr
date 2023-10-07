@@ -3,6 +3,7 @@ var bcrypt = require('bcrypt');
 
 var router = express.Router();
 var User = require('../models/user');
+var Project = require('../models/project');
 
 router.get('/', function (req, res, next) {
 	return res.render('index.ejs');
@@ -63,6 +64,17 @@ router.post('/', function(req, res, next) {
         }
     }
 });
+
+router.get('/getProjects', async (req, res) => {
+	let projects = Project.find()
+		.limit(10);
+
+	res.json(projects)
+})
+
+router.get('/recommendProjects', async (req, res) => {
+	
+})
 
 router.get('/login', function (req, res, next) {
 	return res.render('login.ejs');
