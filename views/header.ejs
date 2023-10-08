@@ -7,6 +7,7 @@
 		background-color: white;
 		padding: 16px;
 		align-items: center;
+		border-bottom: 2px solid #aaa;
 	}
 	header img {
 		content: url('/logo.svg');
@@ -16,14 +17,14 @@
 	header .input-wrapper {
 		flex-grow: 1;
 	}
-	.input-inner-wrapper {
+	header .input-inner-wrapper {
 		position: relative;
 		margin: auto;
 		display: flex;
 		align-items: center;
 		justify-content: center;
 	}
-	.input-inner-wrapper input {
+	header .input-inner-wrapper input {
 		max-width: 60vw;
 		height: 32px;
 		border-radius: 16px;
@@ -50,31 +51,31 @@
 		cursor: pointer;
 	}
 	
-	.right {
+	header .right {
 		margin-left: auto;
 		padding-left: 2vw;
 		display: flex;
 		align-items: center;
 	}
 	
-	.right > *{
+	header .right > *{
 		margin-left: 10px;
 	}
 	
-	.right span.material-symbols-outlined {
+	header .right span.material-symbols-outlined {
 		font-size: 40px;
 		user-select: none;
 		border-radius: 50%;
 	}
 	
-	.right span.material-symbols-outlined:hover {
+	header .right span.material-symbols-outlined:hover {
 		cursor: pointer;
 		color: white;
 		background-color: black;
 		box-shadow: 0 0 0 2px inset black;
 	}
 	
-	.avatar {
+	header .avatar {
 		display: block;
 		float: right;
 		border-radius: 50%;
@@ -84,13 +85,13 @@
 		background-size: cover;
 	}
 	
-	.avatar:hover {
+	header .avatar:hover {
 		cursor: pointer;
 		box-shadow: 0 0 0 4px inset #ddd;
 		
 	}
 	
-	@media (max-width:800px) {
+	@media (max-width:500px) {
 		header img {
 			content: url('/logo_small.svg');
 		}
@@ -98,18 +99,18 @@
 			position: absolute;
 			right: 12px;
 		}
-		.input-inner-wrapper input {
+		header .input-inner-wrapper input {
 			width: 100%;
 			max-width: none;
 		}
-		.right span.material-symbols-outlined {
+		header .right span.material-symbols-outlined {
 			font-size: 32px;
 		}
-		.avatar {
+		header .avatar {
 			height: 40px;
 			width: 40px;
 		}
-		.right > *{
+		header .right > *{
 			margin-left: 4px;
 		}
 	}
@@ -124,10 +125,10 @@
 				<label for="search" class="material-symbols-outlined">search</label>
 			</div>
 		</div>
+		<div class="right">
+			<span class="material-symbols-outlined">add_circle</span>
+			<span class="material-symbols-outlined">explore</span>
+			<div class="avatar"></div>
+		</div>
 	<% } %>
-	<div class="right">
-		<span class="material-symbols-outlined">add_circle</span>
-		<span class="material-symbols-outlined">explore</span>
-		<div class="avatar"></div>
-	</div>
 </header>

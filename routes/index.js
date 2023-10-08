@@ -1,73 +1,33 @@
 const express = require('express');
-const bcrypt = require('bcrypt');
-const recommend = require('collaborative-filter');
-
+// const recommend = require('collaborative-filter')
 const router = express.Router();
-const User = require('../models/user').default;
+const User = require('../models/user');
 const Project = require('../models/project');
 
 const PROJECT_LIMIT = 10;
 
-var mR = math.matrix() // use this for the recommendation algorithm
+// var mR = math.matrix() // use this for the recommendation algorithm
+
+//commented these out because the server wouldn't start
 
 router.get('/', function (req, res, next) {
 	return res.render('index.ejs');
 });
 
 
-router.post('/', function(req, res, next) {
+router.post('/', async function(req, res, next) {
     console.log(req.body);
-    var personInfo = req.body;
-
-    if (!personInfo.email || !personInfo.username || !personInfo.password || !personInfo.passwordConf) {
-        res.send();
-    } else {
-        if (personInfo.password == personInfo.passwordConf) {
-            // Hash and salt the password
-            bcrypt.hash(personInfo.password, 10, function(err, hashedPassword) {
-                if (err) {
-                    console.log(err);
-                    return next(err);
-                }
-
-                // Store the hashed password in the database
-                User.findOne({ email: personInfo.email }, function(err, data) {
-                    if (!data) {
-                        var c;
-                        User.findOne({}, function(err, data) {
-                            if (data) {
-                                console.log("if");
-                                c = data.unique_id + 1;
-                            } else {
-                                c = 1;
-                            }
-
-                            var newPerson = new User({
-                                unique_id: c,
-                                email: personInfo.email,
-                                username: personInfo.username,
-                                password: hashedPassword, // Store the hashed password
-                                passwordConf: personInfo.passwordConf
-                            });
-
-                            newPerson.save(function(err, Person) {
-                                if (err)
-                                    console.log(err);
-                                else
-                                    console.log('Success');
-                            });
-
-                        }).sort({ _id: -1 }).limit(1);
-                        res.send({ "Success": "You are registered, you can login now." });
-                    } else {
-                        res.send({ "Success": "Email is already used." });
-                    }
-                });
-            });
-        } else {
-            res.send({ "Success": "Password is not matched" });
-        }
-    }
+	res.setHeader('content-type', 'text/plain');
+	if(await User.findOne({$or: [{email: req.body.email}, {username: req.body.username}]})){
+		res.send(JSON.stringify({ok: false, err: 'A user is already registered under this username or email.'}));
+		return;
+	}
+	await User.create({
+		email: req.body.email,
+		username: req.body.username,
+		password: req.body.password
+	});
+	res.send(JSON.stringify({ok: true}));
 });
 
 router.post('/likeProject', function (req, res) {
@@ -99,35 +59,24 @@ router.get('/login', function (req, res, next) {
 	return res.render('login.ejs');
 });
 
-router.post('/login', function(req, res, next) {
-    User.findOne({ email: req.body.email }, function(err, data) {
-        if (data) {
-            bcrypt.compare(req.body.password, data.password, function(err, result) {
-                if (result === true) {
-                    req.session.userId = data.unique_id;
-                    res.send({ "Success": "Success!" });
-                } else {
-                    res.send({ "Success": "Invalid email or password!" });
-                }
-            });
-        } else {
-            res.send({ "Success": "This Email Is not registered!" });
-        }
-    });
+router.post('/login', async function(req, res, next) {
+    const user = await User.findOne({username: req.body.username});
+	if (!user)
+		return res.send(JSON.stringify({ok: false, err: "User not found"}));
+	
+	if(req.body.password == user.password)
+		return res.send(JSON.stringify({ok: true}));
+	
+	res.send(JSON.stringify({ok: false, err: "Invalid username or password"}));
 });
 
-router.get('/profile', function (req, res, next) {
+router.get('/profile', async function (req, res, next) {
 	console.log("profile");
-	User.findOne({unique_id:req.session.userId},function(err,data){
-		console.log("data");
-		console.log(data);
-		if(!data){
-			res.redirect('/');
-		}else{
-			//console.log("found");
-			return res.render('user.ejs', {"name":data.username,"email":data.email});
-		}
-	});
+	const user = await User.findOne({unique_id:req.session.userId});
+	if(!user)
+		return res.redirect('/');
+	
+	res.render('user.ejs', {user: user});
 });
 
 router.get('/logout', function (req, res, next) {
@@ -204,5 +153,9 @@ router.get('/chat', function (req, res, next) {
 		});
 	});
 })();
+
+router.get('/home', function(req, res, next) {
+	res.render("home.ejs");
+});
 
 module.exports = router;

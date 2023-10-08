@@ -39,6 +39,34 @@
 			});
 
 		});
+		window.addEventListener('load', () => {
+			const diplay_response = document.getElementById('response');
+			const registration_form = document.getElementById('register');
+			registration_form.addEventListener('submit', (event) => {
+				event.preventDefault();
+				
+				const form_json = {};
+				for (let [key, val] of new FormData(registration_form))
+					form_json[key] = val;
+
+				console.log(form_json);
+				fetch('/login',{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(form_json)
+				})
+				.then(response => response.json())
+				.then(() => {
+					registration_form.reset();
+					if(!res.ok) throw new Error(res.err);
+					display_response.textContent = "Registration successful. You may now log in.";
+					window.location.replace('/profile');
+				})
+				.catch(err => display_response.textContent = 'Error: ' + err.message);
+			});
+		})
 	</script>
 </head>
 <body>
@@ -56,10 +84,9 @@
 		<div class="mssg bg-danger">
 			<span id="check" ></span>
 		</div>
-		<div id="LangTable"><a href="/profile" id="aa"></a>
 		</div>
-		<div><span>Do you forgot password?</span><a href="/forgetpass">Click here</a>
-		<div><span>Create a new Account?</span><a href="/">Register here</a>
+		<div><span>Forgot your password? </span><a href="/forgetpass">Reset password</a>
+		<div><span>Don't have an account? </span><a href="/">Sign up</a>
 
 		</div>
 		

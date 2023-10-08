@@ -8,7 +8,6 @@ var interestObject = {
 }
 
 var userSchema = new Schema({
-	unique_id: mongoose.ObjectId, // For generating unique identifiers
 	email: String,
 	country: String, 
 	languages: [String],
@@ -18,8 +17,7 @@ var userSchema = new Schema({
 	hiddenAttributes: [{name: Boolean, email: Boolean}],
 	verified: Boolean,
 	username: String,
-	password: String,
-	passwordConf: String,
+	password: String
 });
 
 var User = mongoose.model('User', userSchema);
