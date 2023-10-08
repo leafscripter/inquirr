@@ -2,69 +2,81 @@
 <html>
 <head>
 	<title>INQUIRR</title>
-	<link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/css/bootstrap.min.css">
-	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
-	<script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js"></script>
+	<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@20..48,100..700,0..1,-50..200" />
 	<link rel="icon" type="image/x-icon" href="favicon.ico">
 	<link rel="stylesheet" href="./css/main.css">
-
+	<meta name="viewport" content="width=device-width, initial-scale=1">
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-
-			$( "#form1" ).submit(function(event) {
+		window.addEventListener('load', () => {
+			const diplay_error = document.getElementById('error');
+			const registration_form = document.getElementById('register');
+			registration_form.addEventListener('submit', (event) => {
 				event.preventDefault();
-
-				$.ajax({
-					type: 'POST',
-					url: '/',
-					data: $('#form1').serialize(),
-					dataType: "json",
-					success: function(response){
-						//alert("a");
-						//console.log(response.Success);
-						$('#form1')[0].reset();
-
-						document.getElementById("check").innerHTML=response.Success;
-         					//ADD THIS CODE
-         					setTimeout(function(){
-         						document.getElementById("check").innerHTML="";
-         					},3000);
-         					if (response.Success=="You are regestered,You can login now.") {
-         						document.getElementById("aa").click();
-         					};
-         				},
-         				error: function() {
-         				}
-         			})
+				
+				const form_json = {};
+				for (let [key, val] of new FormData(registration_form))
+					form_json[key] = val;
+				
+				fetch('/',{
+					method: 'POST',
+					headers: {
+						'Content-Type': 'application/json'
+					},
+					body: JSON.stringify(form_json)
+				}).then((res, err) => {
+					if(err){
+						display_error.textContent = err;
+						return;
+					}
+					registration_form.reset();
+					document.getElementById("check").textContent = res.Success;
+					setTimeout(function(){
+         				document.getElementById("check").textContent = "";
+         			},3000);
+					if(res.Success == "You are regestered,You can login now.")
+						window.location.replace('/login');
+				});
 			});
-		});
+		})
 	</script>
 </head>
 <body>
-
-	<div class="col-md-4 col-md-offset-4">
-		<div>
-			<p>Register Now
-			</p>
-		</div>
-		<div class="form-group">
-			<form id="form1" method="post">
-				<input type="email" name="email" placeholder="E-mail" required="" class="form-control"><br/>
-				<input type="text" name="username" placeholder="Username" required="" class="form-control"><br/>
-				<input type="password" name="password" placeholder="Password" required="" class="form-control"><br/>
-				<input type="password" name="passwordConf" placeholder="Confirm Password" required="" class="form-control"><br/>
-				<input type="submit" value="Register" class="btn btn-success">
-			</form>
-		</div>
-		
-		<div class="mssg bg-danger">
-			<span id="check"></span>
-		</div>
-		<div>
-			<span>Already Registered! <a href="/login">Login</a></span>
-		</div>
-		<div id="LangTable"><a href="/login" id="aa"></a>
+	<%- include("header", {show_options: true});%>
+	<div class="outer-wrapper">
+		<div class="doc-wrapper">
+			<div>
+				<p>Register Now
+				</p>
+			</div>
+			<div class="form-wrapper">
+				<form id="register">
+					<label>
+						Email:
+						<input type="email" name="email" required="" class="form-field"><br/>
+					</label>
+					<label>
+						Username:
+						<input type="text" name="username" required="" class="form-field"><br/>
+					</label>
+					<label>
+						Password:
+						<input type="password" name="password" required="" class="form-field"><br/>
+					</label>
+					<label>
+						Confirm Password:
+						<input type="password" name="passwordConf" required="" class="form-field"><br/>
+					</label>
+						<input type="submit" value="Register" class="form-submit">
+				</form>
+			</div>
+			
+			<div class="mssg bg-danger">
+				<span id="check"></span>
+			</div>
+			<footer>
+				<span>Already have an account? <a href="/login">Login</a></span>
+			</footer>
 		</div>
 	</div>
 </body>
