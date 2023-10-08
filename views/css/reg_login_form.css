@@ -8,7 +8,7 @@ body, html {
 
 body {
 	text-align: center;
-	background: center / cover no-repeat linear-gradient(red, purple);
+	background: center / cover no-repeat url('/space.jpg');
 }
 
 .outer-wrapper {
