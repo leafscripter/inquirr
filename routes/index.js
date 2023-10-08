@@ -60,6 +60,7 @@ router.get('/login', function (req, res, next) {
 });
 
 router.post('/login', async function(req, res, next) {
+	res.setHeader('content-type', 'text/plain');
     const user = await User.findOne({username: req.body.username});
 	if (!user)
 		return res.send(JSON.stringify({ok: false, err: "User not found"}));
