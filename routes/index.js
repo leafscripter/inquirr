@@ -97,11 +97,10 @@ router.get('/forgetpass', function (req, res, next) {
 	res.render("forget.ejs");
 });
 
-router.post('/forgetpass', function (req, res, next) {
+router.post('/forgetpass', async function (req, res, next) {
 	//console.log('req.body');
 	//console.log(req.body);
-	User.findOne({email:req.body.email},function(err,data){
-		console.log(data);
+	const user = await User.findOne({email:req.body.email});
 		if(!data){
 			res.send({"Success":"This Email Is not regestered!"});
 		}else{
@@ -121,7 +120,6 @@ router.post('/forgetpass', function (req, res, next) {
 			res.send({"Success":"Password does not matched! Both Password should be same."});
 		}
 		}
-	});
 	
 });
 
@@ -155,7 +153,32 @@ router.get('/chat', function (req, res, next) {
 })();
 
 router.get('/home', function(req, res, next) {
-	res.render("home.ejs");
+	let dummy_data = {
+		users: [
+			{username: "john_john",
+			description: "John Smith, BSc\nA student pursuing a Master's degree in Biology at the University of Oslo."},
+			
+			{username: "mary_01",
+			description: "Mary Robertson, Ph.D\nPhysics professor at the University of Manitoba"},
+			
+			{username: "alua",
+			description: "Alua Ivanovna\nCEO of MarineOne Co."}
+		],
+		
+		projects: [
+			{name: 'Creating a Deep Learning algorithm to correctly identify brain tumors',
+			meta: {viewsCount: 25, amountOfUsersInterested: 3}
+			},
+			
+			{name: 'Investigating a new type of bacteria found in the Antarctic',
+			meta: {viewsCount: 1233, amountOfUsersInterested: 704}
+			},
+			
+			{name: 'Using carbon fiber technology in architecture',
+			meta: {viewsCount: 401003, amountOfUsersInterested: 70122}
+			}]
+	};
+	res.render("home.ejs", dummy_data);
 });
 
 module.exports = router;

@@ -10,7 +10,7 @@
 
 	<script type="text/javascript">
 		window.addEventListener('load', () => {
-			const diplay_response = document.getElementById('response');
+			const display_response = document.getElementById('response');
 			const registration_form = document.getElementById('register');
 			registration_form.addEventListener('submit', (event) => {
 				event.preventDefault();
@@ -28,7 +28,7 @@
 					body: JSON.stringify(form_json)
 				})
 				.then(response => response.json())
-				.then(() => {
+				.then((res) => {
 					registration_form.reset();
 					if(!res.ok) throw new Error(res.err);
 					display_response.textContent = "Registration successful. You may now log in.";

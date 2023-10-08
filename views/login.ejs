@@ -9,38 +9,8 @@
 	<link rel="stylesheet" href="./css/main.css">
 
 	<script type="text/javascript">
-		$(document).ready(function(){
-
-			$( "#form" ).submit(function(event) {
-				event.preventDefault();
-
-				$.ajax({
-					type: 'POST',
-					url: '/login',
-					data: $('#form').serialize(),
-					dataType: "json",
-					success: function(response){
-						//alert("a");
-						//console.log(response.Success);
-						$('#form')[0].reset();
-
-						document.getElementById("check").innerHTML=response.Success;
-         					//ADD THIS CODE
-         					setTimeout(function(){
-         						document.getElementById("check").innerHTML="";
-         					},3000);
-         					if (response.Success=="Success!") {
-         						document.getElementById("aa").click();
-         					};
-         				},
-         				error: function() {
-         				}
-         			})
-			});
-
-		});
 		window.addEventListener('load', () => {
-			const diplay_response = document.getElementById('response');
+			const display_response = document.getElementById('response');
 			const registration_form = document.getElementById('register');
 			registration_form.addEventListener('submit', (event) => {
 				event.preventDefault();
@@ -58,10 +28,10 @@
 					body: JSON.stringify(form_json)
 				})
 				.then(response => response.json())
-				.then(() => {
+				.then((res) => {
 					registration_form.reset();
 					if(!res.ok) throw new Error(res.err);
-					display_response.textContent = "Registration successful. You may now log in.";
+					display_response.textContent = "You have successfully logged in.";
 					window.location.replace('/profile');
 				})
 				.catch(err => display_response.textContent = 'Error: ' + err.message);
