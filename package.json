@@ -12,7 +12,13 @@
     "express-session": "^1.16.2",
     "express-ws": "^5.0.2",
     "mongodb": "^4.17.1",
+<<<<<<< Updated upstream
     "mongoose": "^5.6.10"
+=======
+    "mongoose": "^5.6.10",
+    "qrcode": "^1.5.3",
+    "speakeasy": "^2.0.0"
+>>>>>>> Stashed changes
   },
   "scripts": {
     "start": "npx nodemon server.js"

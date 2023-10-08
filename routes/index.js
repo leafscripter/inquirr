@@ -107,7 +107,7 @@ router.post('/login', function(req, res, next) {
                     req.session.userId = data.unique_id;
                     res.send({ "Success": "Success!" });
                 } else {
-                    res.send({ "Success": "Wrong password!" });
+                    res.send({ "Success": "Invalid email or password!" });
                 }
             });
         } else {
