@@ -8,7 +8,7 @@
         text-align: center;
     }*/
 :root, input {
-	font-family: 'Bahnschrift', 'Segoe UI', 'Trebuchet MS', sans-serif;
+	font-family: 'Bahnschrift', 'Segoe UI', 'Trebuchet MS', sans-serif !important;
 }
 p{
 	margin-top: 20px;
